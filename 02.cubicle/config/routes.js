@@ -1,23 +1,49 @@
 const controllers = require('../controllers');
+const { authenticateToken } = require('../util/authorizationUtil')
 
 
 module.exports = (app) => {
-    app.get('/', controllers.home.render),
-    app.get('/create', controllers.cube.renderCreate),
-    app.post('/create', controllers.cube.createCub),
-    app.get('/details/:id', controllers.cube.renderDetails),
-    
-    app.get('/attach/accessory/:id', controllers.cube.renderAttachAccessoryView),
-    app.post('/attach/accessory/:id', controllers.cube.attachAccessory),
+    app.get('/', authenticateToken(), controllers.home.render);
 
-    app.get('/create/accessory', controllers.accessory.render),
-    app.post('/create/accessory', controllers.accessory.create),
-    
-    app.get('/about', (req, res) => {
+    app.route('/create')
+        .get(authenticateToken(), controllers.cube.renderCreate)
+        .post(authenticateToken(), controllers.cube.createCub);
+
+    app.get('/details/:id', authenticateToken(), controllers.cube.renderDetails);
+
+    app.route('/edit/:id')
+        .get(authenticateToken(), controllers.cube.renderEdit)
+        .post(authenticateToken(), controllers.cube.edit);
+
+    app.route('/delete/:id')
+        .get(authenticateToken(), controllers.cube.renderDelete)
+        .post(authenticateToken(), controllers.cube.delete);
+
+    app.route('/attach/accessory/:id')
+        .get(authenticateToken(), controllers.cube.renderAttachAccessoryView)
+        .post(authenticateToken(), controllers.cube.attachAccessory);
+
+    app.route('/create/accessory')
+        .get(authenticateToken(), controllers.accessory.render)
+        .post(authenticateToken(), controllers.accessory.create);
+
+    app.route('/register')
+        .get(authenticateToken(), controllers.user.renderRegister)
+        .post(authenticateToken(), controllers.user.register);
+
+    app.route('/login')
+        .get(authenticateToken(), controllers.user.renderLogin)
+        .post(authenticateToken(), controllers.user.login);
+
+    app.get('/logout', authenticateToken(), controllers.user.logout);
+
+    app.get('/about', authenticateToken(), (req, res) => {
         res.render('about');
-    }),
-    app.post('/search', controllers.cube.search),
+    });
+
+    app.post('/search', authenticateToken(), controllers.cube.search);
+
     app.get('/*', (req, res) => {
         res.render('404');
-    })
+    });
 };

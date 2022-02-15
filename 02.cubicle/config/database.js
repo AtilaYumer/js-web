@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
 require('../models/Cube');
+require('../models/User');
+require('../models/Accessory');
 
 connect().catch(err => console.log(err));
 
