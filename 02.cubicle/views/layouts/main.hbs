@@ -16,16 +16,25 @@
                 <li><a href="/">Browse</a></li>
                 <li><a href="/about">About</a></li>
                 {{#if isLoggedInUser}}
-                    <li><a href="/create">Add a Cube</a></li>
-                    <li><a href="/create/accessory">Add Accessory</a></li>
-                    <li><a href="/logout">Logout</a></li>
+                <li><a href="/cubes/create">Add a Cube</a></li>
+                <li><a href="/accessories/create">Add Accessory</a></li>
+                <li><a href="/users/logout">Logout</a></li>
                 {{else}}
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/register">Register</a></li>
+                <li><a href="/users/login">Login</a></li>
+                <li><a href="/users/register">Register</a></li>
                 {{/if}}
             </ul>
         </header>
-        {{{body}}}
+        {{#if errors}}
+        <div id="notifications">
+            {{#each errors}}
+            <p>{{msg}}</p>
+            {{/each}}
+        </div>
+        {{/if}}
+        <main>
+            {{{body}}}
+        </main>
     </div>
     <footer>@Cubicle: Exercise for Express.js and Handlebars</footer>
 </body>

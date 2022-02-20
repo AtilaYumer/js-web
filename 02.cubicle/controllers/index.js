@@ -1,11 +1,11 @@
 const home = require('./home');
-const cube = require('./cube');
-const accessory = require('./accessory');
-const user = require('./user');
+const cubeController = require('./cubeController');
+const accessoryController = require('./accessoryController');
+const userController = require('./userController');
 
 module.exports = {
     home,
-    cube,
-    accessory,
-    user
+    cubeController,
+    accessoryController,
+    userController
 }
