@@ -39,6 +39,9 @@ router.post('/create',
 
 router.get('/details/:id', async (req, res) => {
     const cube = await cubeService.getCubeById(req.params.id);
+    if (!cube) {
+        res.render('404');
+    }
     res.render('details', { cube: cube, isOwner: res.locals.userId == cube.creatorId });
 });
 
@@ -52,22 +55,43 @@ router.post('/search', async (req, res) => {
 
 router.get('/attach/accessory/:id', async (req, res) => {
     const cube = await cubeService.getCubeById(req.params.id);
+    if (!cube) {
+        res.render('404');
+    }
     const accessories = await accessoryService.getAccessoriesByCube(cube);
     res.render('attachAccessory', { cube, accessories });
 });
 
-router.post('/attach/accessory/:id', async (req, res) => {
-    const cube = await cubeService.getCubeById(req.params.id);
-    const accessory = await accessoryService.getAccessoryById(req.body.accessory);
+router.post('/attach/accessory/:id',
+    body('accessory')
+        .custom(async (value) => {
+            const accessory = await accessoryService.getAccessoryById(value);
+            if (!accessory) {
+                throw new Error('Accessory does not exist anymore please select another accessory.');
+            }
+            return true;
+        }), async (req, res) => {
+            try {
+                const { errors } = validationResult(req);
+                if (errors.length > 0) {
+                    throw errors;
+                }
+                const cube = await cubeService.getCubeById(req.params.id);
+                const accessory = await accessoryService.getAccessoryById(req.body.accessory);
+                if (!cube) {
+                    res.render('404');
+                }
+                cube.accessories.push(accessory._id);
+                accessory.cubes.push(cube._id);
 
-    cube.accessories.push(accessory._id);
-    accessory.cubes.push(cube._id);
-
-    await cube.save();
-    await accessory.save();
-    console.log(`Accessory ${accessory.name} atacched to cube ${cube.name}`);
-    res.redirect(`/cubes/attach/accessory/${req.params.id}`);
-});
+                await cube.save();
+                await accessory.save();
+                console.log(`Accessory ${accessory.name} atacched to cube ${cube.name}`);
+                res.redirect(`/cubes/attach/accessory/${req.params.id}`);
+            } catch (errors) {
+                res.render(`/attach/accessory/${req.params.id}`, { errors, cube: req.body });
+            }
+        });
 
 router.get('/edit/:id', async (req, res) => {
     const cube = await cubeService.getCubeById(req.params.id);
