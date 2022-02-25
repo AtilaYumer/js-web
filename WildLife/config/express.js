@@ -14,7 +14,7 @@ module.exports = (app) => {
                 return false;
             },
             isVoted: function (votes, userId) {
-                return votes.some(element => element._id === userId);
+                return votes.some(element => element._id.toString() === userId);
             },
             joinVotedEmails: function (votes) {
                 return votes.map(v => v.email).join(', ');

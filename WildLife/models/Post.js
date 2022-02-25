@@ -8,7 +8,7 @@ const postSchema = new Schema({
     imageUrl: { type: String, required: true },
     description: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: 'User' },
-    votes: [{ type: [Schema.Types.ObjectId], ref: 'User', default: [] }],
+    votes: { type: [Schema.Types.ObjectId], ref: 'User', default: [] },
     rating: { type: Number, default: 0 }
 });
 

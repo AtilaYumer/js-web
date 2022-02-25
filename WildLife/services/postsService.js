@@ -18,11 +18,21 @@ async function createPost(body, userId) {
 }
 
 async function getPostById(id) {
-    return await Post.findById(id).populate('author').lean();
+    return await Post.findById(id).populate('author').populate('votes').lean();
+}
+
+async function getPost(id) {
+    return await Post.findById(id).populate('author');
+}
+
+async function deletePost(id) {
+    return await Post.deleteOne({_id: id});
 }
 
 module.exports = {
     getAllPosts,
     createPost,
-    getPostById
+    getPostById,
+    getPost,
+    deletePost
 }
