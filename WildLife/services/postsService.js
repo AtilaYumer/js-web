@@ -26,7 +26,23 @@ async function getPost(id) {
 }
 
 async function deletePost(id) {
-    return await Post.deleteOne({_id: id});
+    return await Post.deleteOne({ _id: id });
+}
+
+async function updatePost(post, body) {
+
+    post.title = body.title;
+    post.keyword = body.keyword;
+    post.location = body.location;
+    post.dateOfCreation = body.dateOfCreation;
+    post.imageUrl = body.imageUrl;
+    post.description = body.description;
+
+    await post.save();
+}
+
+async function getPostsByUser(userId) {
+    return await Post.find({ author: userId }).lean();
 }
 
 module.exports = {
@@ -34,5 +50,7 @@ module.exports = {
     createPost,
     getPostById,
     getPost,
-    deletePost
+    deletePost,
+    updatePost,
+    getPostsByUser
 }

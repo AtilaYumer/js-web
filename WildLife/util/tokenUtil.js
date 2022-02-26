@@ -10,7 +10,7 @@ function isLoggedIn() {
         if (payload) {
             res.locals.isUser = true;
             res.locals.userId = payload.userId;
-            res.email = payload.email;
+            res.locals.email = payload.email;
         }
         next();
     }
@@ -22,7 +22,7 @@ function isUser() {
         if (payload) {
             res.locals.isUser = true;
             res.locals.userId = payload.userId;
-            res.email = payload.email;
+            res.locals.email = payload.email;
         } else {
             res.redirect('/users/login');
         }
