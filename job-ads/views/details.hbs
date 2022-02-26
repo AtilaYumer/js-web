@@ -1,0 +1,58 @@
+<section id="details-page">
+    <article class="details-gage-title">
+        <h1>Details Page</h1>
+    </article>
+    <article class="details-page-card">
+
+        <article class="details-page-card-image">
+            <!-- Do not forget to change the path to the image -->
+            <img src="/static/img/man.png" alt="details-image">
+        </article>
+
+        <article class="details-page-card-content">
+            <p>Author: {{ad.author.email}}</p>
+            <h2>Headline: {{ad.headline}}</h2>
+            <h3>Company name: {{ad.companyName}}</h3>
+            <h4>Company description: {{ad.companyDescription}}</h4>
+            <h5>Location: {{ad.location}}</h5>
+
+            <article class="details-page-card-buttons">
+                <!--only for registered users and author of the ad-->
+                {{#if (isUserIdEqual userId ad.author._id)}}
+                <a href="/ads/edit/{{ad._id}}" class="btn-edit">Edit</a>
+                <a href="/ads/delete/{{ad._id}}" class="btn-delete">Delete</a>
+
+                <!--logged in user who did not apply for current ad-->
+                {{else}}
+                {{#if isUser}}
+                {{#if (isApplied ad.applications userId)}}
+                <!--logged in user who has already applied for current ad-->
+                <p class="already-applied">You have already applied!</p>
+                {{else}}
+                <a href="/ads/apply/{{ad._id}}" class="btn-apply">Apply now!</a>
+                {{#if ad.applications}}
+                <p class="applied-people">Hurry up, {{ad.applications.length}} people have already applied.</p>
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                {{/if}}
+            </article>
+        </article>
+
+    </article>
+</section>
+
+<!--This section should only be visible to the author of the current ad-->
+{{#if (isUserIdEqual userId ad.author._id)}}
+{{#if ad.applications}}
+<section id="info-about-candidates">
+    <h2>Candidates for this ad:</h2>
+    {{#each ad.applications}}
+    <article class="info-about-candidates-card">
+        <h2>Email: {{email}}</h2>
+        <h3>Description of the candidate's skills: {{skills}}</h3>
+    </article>
+    {{/each}}
+</section>
+{{/if}}
+{{/if}}
