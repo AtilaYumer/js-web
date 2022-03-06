@@ -1,0 +1,14 @@
+"use strict";
+exports.__esModule = true;
+var employees_1 = require("./employees");
+var junior = new employees_1.Junior('Junior', 24);
+junior.work();
+junior.collectSalary();
+console.log('==============================');
+var senior = new employees_1.Senior('Senior', 32);
+senior.work();
+senior.collectSalary();
+console.log('===============================');
+var manager = new employees_1.Manager('Manager', 40);
+manager.work();
+manager.collectSalary();

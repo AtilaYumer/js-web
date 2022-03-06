@@ -1,0 +1,15 @@
+"use strict";
+exports.__esModule = true;
+var Box_1 = require("./Box");
+var numberBox = new Box_1.Box();
+numberBox.add(1);
+numberBox.add(2);
+numberBox.add(3);
+console.log(numberBox.count());
+console.log('==========================');
+var stringBox = new Box_1.Box();
+stringBox.add('Ali');
+stringBox.add('Veli');
+console.log(stringBox.count());
+stringBox.remove();
+console.log(stringBox.count());
