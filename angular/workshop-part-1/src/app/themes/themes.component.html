@@ -1,0 +1,10 @@
+<div class="container">
+    <main>
+        <div class="theme-title" *ngFor="let theme of themes">
+            <app-theme [theme]="theme"></app-theme>
+        </div>
+    </main>
+    <aside>
+        <app-aside></app-aside>
+    </aside>
+</div>
